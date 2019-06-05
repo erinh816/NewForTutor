@@ -38,6 +38,12 @@ class Button extends Component {
       style: this.getInitialStyle().borderedBtn
     };
 
+    if(Array.isArray(this.props.style)){
+      const flattenedStyle = this.props.style.reduce(( accumulator, currentValue ) => accumulator.concat(currentValue), []);
+      return computeProps({...this.props, style: flattenedStyle}, defaultProps);
+    }
+
+
     return computeProps(this.props, defaultProps);
   }
   render() {
@@ -100,7 +106,7 @@ class Button extends Component {
           <TouchableNativeFeedback
             ref={c => (this._root = c)}
             onPress={this.props.onPress}
-            background={this.props.transparent ? TouchableNativeFeedback.Ripple('transparent') : undefined}
+            background={this.props.transparent ? TouchableNativeFeedback.Ripple('transparent') : TouchableNativeFeedback.Ripple(variables.androidRippleColor, false)}
             {...this.prepareRootProps()}
           >
             <View {...this.prepareRootProps()}>{children}</View>
